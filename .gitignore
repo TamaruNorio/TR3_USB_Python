@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.env
+.venv
+venv/
+env/
+*.egg-info/
+
+# VSCode
+.vscode/
+
+# PyInstaller build artifacts
+build/
+dist/
+*.spec
+
+# Logs
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Archives
+*.zip
