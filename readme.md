@@ -1,175 +1,160 @@
-# TR3 USB / LAN Reader Writer Sample Collection
-
-タカヤ製 RFID リーダ／ライタ（TR3 シリーズ・HF 13.56MHz）を **Windows 環境**で制御するための C++ / Python 学習用サンプル集です。USB 経由のシリアル通信を前提とし、必要最小限の依存関係でプロトコルの流れと実装手順を理解できる構成になっています。
-
-教育現場や新人エンジニア向けの教材としても利用できるよう、コードは丁寧な日本語コメントと実行ログを備え、TR3 の基本コマンド（ROM バージョン取得・動作モード制御・Inventory2・ブザー制御）を一通り体験できます。
+完璧です。いまの README はもともと **C++/Python混在（TR3\_USB\_CPP向け）** の内容になっており、今回のリポジトリ **TR3\_USB\_Python** 専用としては以下のように整理するのが最適です👇
 
 ---
 
-## 主な機能
+## 🎯 修正版 README.md（TR3\_USB\_Python 用）
 
-- ✅ C++（Win32 API）によるシリアル通信ラッパーと TR3 プロトコル実装
-- ✅ 対話式コンソールアプリ（COM ポート選択、ボーレート設定、Inventory2）
-- ✅ Python + Tkinter の GUI サンプル（pyserial のみ依存）
-- ✅ 送受信フレームの 16 進ログ表示と簡潔なエラーハンドリング
-- ✅ 教材として読みやすい日本語コメントとコード構成
+```markdown
+# TR3_USB_Python
+
+タカヤ製 RFID リーダ／ライタ **TR3 シリーズ（HF 13.56MHz）** を  
+Python から制御するための **Windows向けサンプルプログラム** です。
+
+USB 経由のシリアル通信（仮想 COM ポート）を利用し、  
+ROM バージョン取得、動作モード制御、Inventory2、ブザー制御を  
+GUI（Tkinter）で体験できます。
 
 ---
 
-## リポジトリ構成
+## 主な特徴
+
+- ✅ **Tkinter GUI** による直感的な操作  
+- ✅ **pyserial** のみ依存（軽量構成）  
+- ✅ **16進ログ出力**で通信プロトコルを学習可能  
+- ✅ TR3 の代表コマンド（ROM / Mode / Inventory2 / Buzzer）を実装  
+- ✅ **PyInstaller ビルドバッチ付き**（`build_exe.bat`）
+
+---
+
+## フォルダ構成
 
 ```
-TR3_USB_CPP/
-├─ build/                 ← 生成物（.exe / .obj / .pdb など）を集約
-├─ include/
-│   ├─ serial_port.hpp
-│   └─ tr3_protocol.hpp
-├─ src/
-│   ├─ main.cpp           ← 実行エントリ（対話 UI）
-│   ├─ serial_port.cpp    ← シリアル I/O（Win32 API）
-│   └─ tr3_protocol.cpp   ← TR3 プロトコル（ROM 版取得・動作モード・Inventory2・ブザー）
-├─ python/
-│   └─ tr3_gui.py         ← Python + Tkinter 版 GUI サンプル
-├─ build_msvc.bat         ← MSVC 向けビルドバッチ
-└─ README.md
-```
+
+TR3\_USB\_Python/
+├─ tr3\_usb\_gui.py        ← メインGUIスクリプト
+├─ build\_exe.bat         ← exeビルド用バッチ（PyInstaller）
+├─ README.md             ← この説明ファイル
+└─ .gitignore
+
+````
 
 ---
 
 ## 動作環境
 
-| 項目 | 推奨 | 備考 |
-| ---- | ---- | ---- |
-| OS | Windows 10 / 11 (64bit) | USB 経由で TR3 を接続 |
-| 開発環境 (C++) | Visual Studio 2022 + MSVC | x64 Native Tools Command Prompt を使用 |
-| Python | 3.9 以上 | `pyserial` のみ追加インストール |
-| ハードウェア | TR3 シリーズ（HF 13.56MHz） | USB または仮想 COM ポート |
+| 項目 | 内容 |
+| ---- | ---- |
+| OS | Windows 10 / 11 (64bit) |
+| Python | 3.9 以上（推奨 3.11） |
+| 依存ライブラリ | `pyserial` |
+| ハードウェア | TR3 シリーズ（HF 13.56MHz / USBモデル） |
 
-> LAN モデルを利用する場合は、別途ソケット通信部分を差し替えてご利用ください。本サンプルは USB シリアル接続を想定しています。
-
----
-
-## C++ サンプルのビルド手順
-
-1. Visual Studio 2022（C++ 開発ワークロード）をインストール済みであることを確認します。
-2. **x64 Native Tools Command Prompt for VS 2022** を起動します。
-3. 本リポジトリのフォルダへ移動し、以下のコマンドを実行します。
-
-### Debug ビルド（既定）
-```bat
-build_msvc.bat
-```
-
-### Release ビルド
-```bat
-build_msvc.bat release
-```
-
-### クリーン（生成物を削除）
-```bat
-build_msvc.bat clean
-```
-
-> 生成物はすべて `build/` フォルダに出力され、ルート直下が散らからない構成になっています。
+> ※ LANモデルを制御する場合は、ソケット通信部分をTR3XM LAN版サンプルを参考に差し替えてください。
 
 ---
 
-## 実行ファイルと典型ログ
+## 事前準備
 
-- 実行ファイル: `build\tr3_usb.exe`
-- 中間ファイル: `build\*.obj`, `build\*.pdb`, `build\*.ilk` など（`clean` で削除可能）
-
-### ビルド直後の出力例
-```bat
-C:\Users\example\TR3_USB_CPP>build_msvc.bat
-[BUILD] Compiling ...
-main.cpp
-serial_port.cpp
-tr3_protocol.cpp
-コードを生成中...
-[SUCCESS] Output: C:\Users\example\TR3_USB_CPP\build\tr3_usb.exe
-Run: "C:\Users\example\TR3_USB_CPP\build\tr3_usb.exe"
-```
-
-### 実行時の典型ログ
-```
-=== 利用可能なCOMポート ===
-  [0] COM3
-  [1] COM5
-使用する番号（Enterで0）: 0
-=== ボーレート（Enterで19200） ===
-  [0] 19200 bps
-  [1] 38400 bps
-番号を入力: 0
-インベントリの試行回数（Enterで1）:
-```
-
-- 起動直後に **ROM バージョン**を取得して疎通確認を行います。
-- 続いて **リーダ／ライタ動作モード**を読み取り、**「モードのみ」コマンドモード (0x00)** へ変更します（アンチコリジョン・ブザー設定・通信速度は現状維持）。
-- **Inventory2** を指定回数実行し、タグ検出結果に応じてブザー音を切り替えます。
-  - タグ検出時: **ピー (0x00)**
-  - 検出なし／エラー: **ピッピッピ (0x01)**
-- 送受信フレームは 16 進表記でログ出力されるため、プロトコル学習に活用できます。
-
----
-
-## Python GUI サンプル `python/tr3_gui.py`
-
-Windows 上で Python から TR3 を操作できる Tkinter ベースのサンプルです。シリアル通信は `pyserial` を利用し、C++ 版と同等の機能を GUI で体験できます。
-
-### 事前準備
-1. Python 3.9 以上をインストール（公式インストーラ推奨、`Add python.exe to PATH` を有効化）。
-2. 依存ライブラリをインストール。
+1. Python をインストール（インストーラで “Add python.exe to PATH” にチェック）  
+2. 必要ライブラリを導入：
    ```powershell
    py -m pip install pyserial
-   ```
+````
 
-### 実行方法（PowerShell）
+---
+
+## 実行方法
+
 ```powershell
 cd <本リポジトリのパス>
-py python\tr3_gui.py
+py tr3_usb_gui.py
 ```
 
-### GUI でできること
-- COM ポートとボーレートをドロップダウンで選択し接続
-- ROM バージョン表示と動作モードの読み取り・変更
-- Inventory2 を任意回数実行し、取得 UID を一覧表示
-- タグ検出状況に応じたブザー制御（ピー / ピッピッピ）
-- 左下ログに送受信フレームを 16 進表示（教育用途向け）
+### GUIでできること
+
+* COMポートとボーレートをドロップダウンで選択
+* ROMバージョンの取得
+* 動作モードの読み取り／コマンドモードへの変更
+* Inventory2 の実行とタグ検出
+* タグ検出時にブザー制御（ピー／ピッピッピ）
+* 下部ログエリアに送受信フレームを16進で表示
 
 ---
 
-## Visual Studio Code で Python サンプルを実行する手順
+## EXE ビルド手順（Windows）
 
-1. **Visual Studio Code** を起動し、`TR3_USB_CPP` フォルダを開きます（`File > Open Folder...`）。
-2. 拡張機能「**Python (ms-python.python)**」をインストールします。
-3. `Ctrl+Shift+P` でコマンドパレットを開き、`Python: Select Interpreter` から使用するインタープリタ（例: `Python 3.11 (64-bit)`) を選択します。
-4. VS Code のターミナル（`Ctrl+Shift+` キー）で依存ライブラリを導入します。
-   ```powershell
-   py -m pip install pyserial
+1. VS Code で本フォルダを開く
+2. ターミナルで以下を実行：
+
+   ```bat
+   build_exe.bat
    ```
-   > 仮想環境を利用する場合は `python -m venv .venv` で環境を作成し、`powershell -ExecutionPolicy Bypass -File .\.venv\Scripts\Activate.ps1` などで有効化したうえで同じコマンドを実行してください。
-5. `python/tr3_gui.py` をエディタで開き、右上の **▶ Run Python File** または 実行メニューから **Python: Current File** を選択して `F5` を押します。
-6. 画面右下のステータスバーで選択中のインタープリタを確認し、GUI が起動したら COM ポート・ボーレートを選んで接続します。
+3. 成功すると `dist\tr3_usb_gui.exe` が生成されます。
+
+> GUIアプリなのでコンソールは表示されません。
+> コンソール版にしたい場合は `build_exe.bat` 内の `--noconsole` を削除してください。
 
 ---
 
 ## トラブルシューティング
 
-| 症状 | 主な原因 | 対処 |
-| ---- | -------- | ---- |
-| シリアルポートをオープンできない | ポート番号誤り / 占有中 / 権限不足 | デバイスマネージャでポート番号を確認し、他アプリを終了 | 
-| NACK 応答 | コマンド種別やチェックサム不一致 | ログの 16 進出力でフレームを確認。ブザーは `CMD:0x42`、動作モード書き込みは `CMD:0x4E / Mode Detail 0x00` を使用 |
-| タイムアウト | ケーブル抜け・距離・タグ枚数・ボーレート不一致 | 接続状態を確認し、ボーレートが 19200 bps（既定）で一致しているか確認 |
-
-> それでも解決しない場合は、通信プロトコル説明書とロガーの出力を突き合わせて原因を切り分けてください。
+| 症状          | 主な原因             | 対処                       |
+| ----------- | ---------------- | ------------------------ |
+| COMポートが開けない | ポート番号誤り／占有中      | デバイスマネージャで確認し、他アプリを終了    |
+| NACK応答      | コマンド誤り／チェックサム不一致 | ログ出力で送受信フレームを確認          |
+| タイムアウト      | ケーブル抜け／ボーレート不一致  | ボーレートを既定値（19200bps）に合わせる |
 
 ---
 
-## ライセンスと免責
+## GitHub Actions（自動ビルド）
 
-- 本サンプルは学習・検証目的で提供しています。ご利用は自己責任でお願いします。
-- 当社製品の詳細な通信仕様については公開資料（通信プロトコル説明書）をご参照ください。
-- 非公開 API や社内固有情報、ネットワーク設定は一切含めていません。
+タグを `vX.Y.Z` 形式で push すると、Windowsランナーで自動的に
+`tr3_usb_gui.exe` をビルドして Release に添付することができます。
 
-教育目的でのご利用や改変は自由です。フィードバックや改善提案があれば Issue / Pull Request でお知らせください。
+→ `.github/workflows/build-win.yml` を参照。
+
+---
+
+## ライセンス
+
+MIT License
+Copyright (c) 2025 Norio Tamaru
+
+---
+
+## 関連リポジトリ
+
+* [TR3\_USB\_CPP](https://github.com/TamaruNorio/TR3_USB_CPP) — C++版（Win32 API）
+* [TR3\_LAN\_CPP](https://github.com/TamaruNorio/TR3_LAN_CPP) — LAN版（ソケット通信）
+* [UTR\_USB\_Python](https://github.com/TamaruNorio/UTR_USB_Python) — UHF帯 UTRシリーズ
+* [UTR\_LAN\_Python](https://github.com/TamaruNorio/UTR_LAN_Python) — UHF帯 LAN版
+
+---
+
+## 参考資料
+
+* [通信プロトコル説明書（HF帯製品）](https://www.takaya.co.jp/product/rfid/hf/hf_list/)
+* [TR3RWManager ユーティリティ](https://www.takaya.co.jp/product/rfid/hf/hf_utility/)
+* [タカヤ株式会社 RFID製品ページ](https://www.product.takaya.co.jp/rfid/)
+
+```
+
+---
+
+### 💡ポイント
+- 現在の Python 専用構成に最適化  
+- C++ビルド説明などは削除  
+- GUI操作／exe化／トラブル対応を強調  
+- 他リポジトリと文体・デザイン統一（シリーズ横並びに見せる）
+
+---
+
+この内容で置き換えた `README.md` をコミット＆プッシュすれば、  
+GitHub上でも他のTR3/UTRシリーズと揃った美しいリポジトリになります。
+
+希望があれば：
+- 英語版 `README_EN.md` も生成できます（海外向けGitHub用）  
+- または「リリースページに貼る短縮説明（1段落版）」も作れます。  
+
+どちらを作りましょうか？
+```
