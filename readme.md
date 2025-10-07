@@ -1,4 +1,3 @@
-```markdown
 # TR3_USB_Python
 
 タカヤ製 RFID リーダ／ライタ **TR3 シリーズ（HF 13.56MHz）** を  
@@ -23,14 +22,12 @@ GUI（Tkinter）で体験できます。
 ## フォルダ構成
 
 ```
-
-TR3\_USB\_Python/
-├─ tr3\_usb\_gui.py        ← メインGUIスクリプト
-├─ build\_exe.bat         ← exeビルド用バッチ（PyInstaller）
+TR3_USB_Python/
+├─ tr3_usb_gui.py        ← メインGUIスクリプト
+├─ build_exe.bat         ← exeビルド用バッチ（PyInstaller）
 ├─ README.md             ← この説明ファイル
 └─ .gitignore
-
-````
+```
 
 ---
 
@@ -53,7 +50,7 @@ TR3\_USB\_Python/
 2. 必要ライブラリを導入：
    ```powershell
    py -m pip install pyserial
-````
+   ```
 
 ---
 
@@ -66,43 +63,42 @@ py tr3_usb_gui.py
 
 ### GUIでできること
 
-* COMポートとボーレートをドロップダウンで選択
-* ROMバージョンの取得
-* 動作モードの読み取り／コマンドモードへの変更
-* Inventory2 の実行とタグ検出
-* タグ検出時にブザー制御（ピー／ピッピッピ）
-* 下部ログエリアに送受信フレームを16進で表示
+- COMポートとボーレートをドロップダウンで選択  
+- ROMバージョンの取得  
+- 動作モードの読み取り／コマンドモードへの変更  
+- Inventory2 の実行とタグ検出  
+- タグ検出時にブザー制御（ピー／ピッピッピ）  
+- 下部ログエリアに送受信フレームを16進で表示  
 
 ---
 
 ## EXE ビルド手順（Windows）
 
-1. VS Code で本フォルダを開く
+1. VS Code で本フォルダを開く  
 2. ターミナルで以下を実行：
-
    ```bat
    build_exe.bat
    ```
 3. 成功すると `dist\tr3_usb_gui.exe` が生成されます。
 
-> GUIアプリなのでコンソールは表示されません。
+> GUIアプリなのでコンソールは表示されません。  
 > コンソール版にしたい場合は `build_exe.bat` 内の `--noconsole` を削除してください。
 
 ---
 
 ## トラブルシューティング
 
-| 症状          | 主な原因             | 対処                       |
-| ----------- | ---------------- | ------------------------ |
-| COMポートが開けない | ポート番号誤り／占有中      | デバイスマネージャで確認し、他アプリを終了    |
-| NACK応答      | コマンド誤り／チェックサム不一致 | ログ出力で送受信フレームを確認          |
-| タイムアウト      | ケーブル抜け／ボーレート不一致  | ボーレートを既定値（19200bps）に合わせる |
+| 症状 | 主な原因 | 対処 |
+| ---- | -------- | ---- |
+| COMポートが開けない | ポート番号誤り／占有中 | デバイスマネージャで確認し、他アプリを終了 |
+| NACK応答 | コマンド誤り／チェックサム不一致 | ログ出力で送受信フレームを確認 |
+| タイムアウト | ケーブル抜け／ボーレート不一致 | ボーレートを既定値（19200bps）に合わせる |
 
 ---
 
 ## GitHub Actions（自動ビルド）
 
-タグを `vX.Y.Z` 形式で push すると、Windowsランナーで自動的に
+タグを `vX.Y.Z` 形式で push すると、Windowsランナーで自動的に  
 `tr3_usb_gui.exe` をビルドして Release に添付することができます。
 
 → `.github/workflows/build-win.yml` を参照。
@@ -111,44 +107,22 @@ py tr3_usb_gui.py
 
 ## ライセンス
 
-MIT License
+MIT License  
 Copyright (c) 2025 Norio Tamaru
 
 ---
 
 ## 関連リポジトリ
 
-* [TR3\_USB\_CPP](https://github.com/TamaruNorio/TR3_USB_CPP) — C++版（Win32 API）
-* [TR3\_LAN\_CPP](https://github.com/TamaruNorio/TR3_LAN_CPP) — LAN版（ソケット通信）
-* [UTR\_USB\_Python](https://github.com/TamaruNorio/UTR_USB_Python) — UHF帯 UTRシリーズ
-* [UTR\_LAN\_Python](https://github.com/TamaruNorio/UTR_LAN_Python) — UHF帯 LAN版
+- [TR3_USB_CPP](https://github.com/TamaruNorio/TR3_USB_CPP) — C++版（Win32 API）
+- [TR3_LAN_CPP](https://github.com/TamaruNorio/TR3_LAN_CPP) — LAN版（ソケット通信）
+- [UTR_USB_Python](https://github.com/TamaruNorio/UTR_USB_Python) — UHF帯 UTRシリーズ
+- [UTR_LAN_Python](https://github.com/TamaruNorio/UTR_LAN_Python) — UHF帯 LAN版
 
 ---
 
 ## 参考資料
 
-* [通信プロトコル説明書（HF帯製品）](https://www.takaya.co.jp/product/rfid/hf/hf_list/)
-* [TR3RWManager ユーティリティ](https://www.takaya.co.jp/product/rfid/hf/hf_utility/)
-* [タカヤ株式会社 RFID製品ページ](https://www.product.takaya.co.jp/rfid/)
-
-```
-
----
-
-### 💡ポイント
-- 現在の Python 専用構成に最適化  
-- C++ビルド説明などは削除  
-- GUI操作／exe化／トラブル対応を強調  
-- 他リポジトリと文体・デザイン統一（シリーズ横並びに見せる）
-
----
-
-この内容で置き換えた `README.md` をコミット＆プッシュすれば、  
-GitHub上でも他のTR3/UTRシリーズと揃った美しいリポジトリになります。
-
-希望があれば：
-- 英語版 `README_EN.md` も生成できます（海外向けGitHub用）  
-- または「リリースページに貼る短縮説明（1段落版）」も作れます。  
-
-どちらを作りましょうか？
-```
+- [通信プロトコル説明書（HF帯製品）](https://www.takaya.co.jp/product/rfid/hf/hf_list/)
+- [TR3RWManager ユーティリティ](https://www.takaya.co.jp/product/rfid/hf/hf_utility/)
+- [タカヤ株式会社 RFID製品ページ](https://www.product.takaya.co.jp/rfid/)
