@@ -1,9 +1,3 @@
-完璧です。いまの README はもともと **C++/Python混在（TR3\_USB\_CPP向け）** の内容になっており、今回のリポジトリ **TR3\_USB\_Python** 専用としては以下のように整理するのが最適です👇
-
----
-
-## 🎯 修正版 README.md（TR3\_USB\_Python 用）
-
 ```markdown
 # TR3_USB_Python
 
